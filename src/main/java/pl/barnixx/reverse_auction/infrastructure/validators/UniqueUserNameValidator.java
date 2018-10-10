@@ -17,6 +17,7 @@ public class UniqueUserNameValidator implements ConstraintValidator<UniqueUserNa
     }
 
     public boolean isValid(String username, ConstraintValidatorContext context) {
-        return IUserService.isUsernameExists(username);
+        boolean result = IUserService.isUsernameExists(username);
+        return !result;
     }
 }

@@ -1,4 +1,4 @@
-package pl.barnixx.reverse_auction.infrastructure.handler.users;
+package pl.barnixx.reverse_auction.infrastructure.handlers.users;
 
 import org.springframework.stereotype.Component;
 import pl.barnixx.reverse_auction.infrastructure.commands.ICommandHandler;
@@ -16,6 +16,6 @@ public class CreateUserHandler implements ICommandHandler<CreateUser> {
 
     @Override
     public void handle(CreateUser command) {
-        IUserService.Register(command.email, command.username, command.password, command.repeatPassword);
+        IUserService.Register(command.getEmail(), command.getUsername(), command.getPassword());
     }
 }

@@ -1,20 +1,18 @@
 package pl.barnixx.reverse_auction.infrastructure.validators;
 
-import pl.barnixx.reverse_auction.core.domain.User;
+import pl.barnixx.reverse_auction.infrastructure.commands.users.CreateUser;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
-public class ConfirmPasswordValidator implements ConstraintValidator<ConfirmPassword, User> {
+public class ConfirmPasswordValidator implements ConstraintValidator<ConfirmPassword, CreateUser> {
     @Override
     public void initialize(ConfirmPassword confirmPassword) {
 
     }
 
     @Override
-    public boolean isValid(User user, ConstraintValidatorContext context) {
-        System.out.println(user.getPassword());
-        System.out.println(user.getRepeatPassword());
+    public boolean isValid(CreateUser user, ConstraintValidatorContext context) {
         if (!user.getPassword().equals(user.getRepeatPassword())) {
             context.disableDefaultConstraintViolation();
             context.buildConstraintViolationWithTemplate(context.getDefaultConstraintMessageTemplate())

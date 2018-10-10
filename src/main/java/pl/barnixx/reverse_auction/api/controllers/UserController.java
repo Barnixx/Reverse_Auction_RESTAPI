@@ -2,28 +2,42 @@ package pl.barnixx.reverse_auction.api.controllers;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
+import pl.barnixx.reverse_auction.infrastructure.DTO.UserDTO;
 import pl.barnixx.reverse_auction.infrastructure.commands.ICommandDispatcher;
 import pl.barnixx.reverse_auction.infrastructure.commands.users.CreateUser;
+import pl.barnixx.reverse_auction.infrastructure.services.IUserService;
+import pl.barnixx.reverse_auction.infrastructure.validators.UserRegisterValidationGroup;
 
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
 
     private final ICommandDispatcher commandDispatcher;
+    private final IUserService userService;
 
-    public UserController(ICommandDispatcher commandDispatcher) {
+    public UserController(ICommandDispatcher commandDispatcher, IUserService userService) {
         this.commandDispatcher = commandDispatcher;
+        this.userService = userService;
     }
 
-    @PostMapping("/add")
-    public ResponseEntity post(@RequestBody CreateUser command) {
+    @GetMapping("/{id}")
+    public ResponseEntity<UserDTO> get(@PathVariable long id) {
+        UserDTO user = userService.findById(id);
+
+        if (user == null) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+
+        return new ResponseEntity<>(user, HttpStatus.OK);
+    }
+
+    @PostMapping
+    public ResponseEntity<Object> post(@Validated(UserRegisterValidationGroup.class) @RequestBody CreateUser command) {
 
         commandDispatcher.Dispatch(command);
 
-        return new ResponseEntity(HttpStatus.CREATED);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 }

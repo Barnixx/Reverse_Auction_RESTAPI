@@ -32,7 +32,7 @@ public class User {
     private Long id;
 
     @UniqueUserName(groups = UserRegisterValidationGroup.class)
-    @NotBlank()
+    @NotBlank
     @Length(min = 5, max = 20)
     @Column(nullable = false, unique = true)
     private String username;
@@ -40,9 +40,6 @@ public class User {
     @NotBlank(message = "Hasło nie może być puste")
     @Column(length = 200)
     private String password;
-
-    @Transient
-    private String repeatPassword;
 
     private int enabled;
 

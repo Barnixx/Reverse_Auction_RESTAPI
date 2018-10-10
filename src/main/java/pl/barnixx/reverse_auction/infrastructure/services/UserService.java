@@ -1,11 +1,14 @@
 package pl.barnixx.reverse_auction.infrastructure.services;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import pl.barnixx.reverse_auction.core.domain.User;
 import pl.barnixx.reverse_auction.core.repositories.IUserRepository;
+import pl.barnixx.reverse_auction.infrastructure.DTO.UserDTO;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService implements IUserService {
@@ -17,8 +20,12 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public User findById(Long id) {
-        return userRepository.getOne(id);
+    public UserDTO findById(Long id) {
+
+        Optional<User> optUser = userRepository.findById(id);
+
+        return optUser.map(user -> new ModelMapper().map(user, UserDTO.class)).orElse(null);
+
     }
 
     @Override
@@ -52,12 +59,11 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public void Register(String email, String username, String password, String repeatPassword) {
+    public void Register(String email, String username, String password) {
         User user = User.builder()
                 .email(email)
                 .username(username)
                 .password(password)
-                .repeatPassword(repeatPassword)
                 .build();
         userRepository.save(user);
     }

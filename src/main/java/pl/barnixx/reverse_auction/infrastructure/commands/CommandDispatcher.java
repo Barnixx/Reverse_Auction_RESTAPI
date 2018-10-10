@@ -20,7 +20,8 @@ public class CommandDispatcher implements ICommandDispatcher {
         }
 
         //TODO: In future try to make it simple and safer
-        ICommandHandler<T> handler = context.getBean(command.getClass().getSimpleName() + "Handler", ICommandHandler.class);
+//        ICommandHandler<T> handler = context.getBean(command.getClass().getSimpleName() + "Handler", ICommandHandler.class);
+        ICommandHandler<T> handler = context.getBean(ICommandHandler.class, command);
 
         handler.handle(command);
 

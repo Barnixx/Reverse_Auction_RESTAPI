@@ -1,12 +1,13 @@
 package pl.barnixx.reverse_auction.infrastructure.services;
 
 import pl.barnixx.reverse_auction.core.domain.User;
+import pl.barnixx.reverse_auction.infrastructure.DTO.UserDTO;
 
 import java.util.List;
 
 public interface IUserService {
 
-    User findById(Long id);
+    UserDTO findById(Long id);
 
     List<User> getAll();
 
@@ -20,5 +21,5 @@ public interface IUserService {
 
     boolean isUsernameExists(String username);
 
-    void Register(String email, String username, String password, String repeatPassword);
+    void Register(String email, String username, String password);
 }
