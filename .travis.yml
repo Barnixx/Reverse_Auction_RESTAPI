@@ -7,4 +7,6 @@ branches:
   - master
 
 before_install:
-- chmod +x mvnw
+  - chmod +x mvnw
+install:
+  - mvn install -DskipTests -Dmaven.javadoc.skip=true -B -V
