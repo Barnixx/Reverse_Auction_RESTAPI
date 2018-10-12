@@ -11,8 +11,8 @@ services:
 
 
 before_script:
-  - psql -c "CREATE DATABASE reverse_auction;" -U postgres
-  - psql -c "CREATE USER db_user WITH PASSWORD 'reverseauction';" -U postgres
+  - psql -c "CREATE DATABASE ${DATABASE_NAME};" -U postgres
+  - psql -c "CREATE USER ${DATABASE_USER} WITH PASSWORD '${DATABASE_PASS}';" -U postgres
 
 before_install:
   - chmod +x mvnw
