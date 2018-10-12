@@ -16,7 +16,7 @@ public class CommandDispatcher implements ICommandDispatcher {
     public <T extends ICommand> void Dispatch(T command) {
 
         if (command == null) {
-            throw new NullPointerException();
+            throw new NullPointerException("Command can not be null.");
         }
 
         //TODO: In future try to make it simple and safer

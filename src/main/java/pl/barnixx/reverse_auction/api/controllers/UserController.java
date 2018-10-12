@@ -2,13 +2,14 @@ package pl.barnixx.reverse_auction.api.controllers;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 import pl.barnixx.reverse_auction.infrastructure.DTO.UserDTO;
 import pl.barnixx.reverse_auction.infrastructure.commands.ICommandDispatcher;
 import pl.barnixx.reverse_auction.infrastructure.commands.users.CreateUser;
 import pl.barnixx.reverse_auction.infrastructure.services.IUserService;
-import pl.barnixx.reverse_auction.infrastructure.validators.UserRegisterValidationGroup;
+
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/api/users")
@@ -34,7 +35,10 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<Object> post(@Validated(UserRegisterValidationGroup.class) @RequestBody CreateUser command) {
+    public ResponseEntity post(@Valid @RequestBody CreateUser command, Errors errors) {
+        if (errors.hasErrors()) {
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
 
         commandDispatcher.Dispatch(command);
 

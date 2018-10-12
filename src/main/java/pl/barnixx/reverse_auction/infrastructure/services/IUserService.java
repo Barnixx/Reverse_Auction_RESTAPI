@@ -9,6 +9,8 @@ public interface IUserService {
 
     UserDTO findById(Long id);
 
+    UserDTO findByName(String username);
+
     List<User> getAll();
 
     void update(User user);

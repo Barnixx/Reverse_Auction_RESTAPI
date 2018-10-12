@@ -13,6 +13,7 @@ public class ConfirmPasswordValidator implements ConstraintValidator<ConfirmPass
 
     @Override
     public boolean isValid(CreateUser user, ConstraintValidatorContext context) {
+        if (user.getPassword() == null) return false;
         if (!user.getPassword().equals(user.getRepeatPassword())) {
             context.disableDefaultConstraintViolation();
             context.buildConstraintViolationWithTemplate(context.getDefaultConstraintMessageTemplate())

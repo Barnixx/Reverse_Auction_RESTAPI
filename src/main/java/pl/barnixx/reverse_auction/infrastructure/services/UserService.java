@@ -29,6 +29,13 @@ public class UserService implements IUserService {
     }
 
     @Override
+    public UserDTO findByName(String username) {
+        Optional<User> optUser = userRepository.findByUsername(username);
+        return optUser.map(user -> new ModelMapper().map(user, UserDTO.class)).orElse(null);
+
+    }
+
+    @Override
     public List<User> getAll() {
         return userRepository.findAll(Sort.by("id"));
     }

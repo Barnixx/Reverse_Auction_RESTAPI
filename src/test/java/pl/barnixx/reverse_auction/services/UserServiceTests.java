@@ -113,4 +113,19 @@ public class UserServiceTests {
     }
 
 
+    @Test
+    public void when_given_user_then_register() {
+        //given
+        User user = User.builder()
+                .username("user1")
+                .password("secret")
+                .email("user1@email.com")
+                .build();
+        when(userRepository.save(any(User.class))).thenReturn(user);
+        //when
+        userService.Register(user.getEmail(), user.getUsername(), user.getPassword());
+        UserDTO userDTO = userService.findByName(user.getUsername());
+        //then
+        verify(userRepository, times(1)).save(user);
+    }
 }
