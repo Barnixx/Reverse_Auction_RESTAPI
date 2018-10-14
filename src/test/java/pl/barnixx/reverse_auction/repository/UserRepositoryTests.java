@@ -9,6 +9,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 import pl.barnixx.reverse_auction.core.domain.User;
 import pl.barnixx.reverse_auction.core.repositories.IUserRepository;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.Assert.*;
@@ -100,5 +103,31 @@ public class UserRepositoryTests {
         entityManager.persist(user);
         //then
         assertFalse(userRepository.existsByUsername("XXX"));
+    }
+
+    @Test
+    public void given_not_then_return_users() {
+        List<User> users = new ArrayList<User>(Arrays.asList(
+                User.builder()
+                        .username("user1")
+                        .password("secret")
+                        .email("user1@email.com")
+                        .build(),
+
+                User.builder()
+                        .username("user2")
+                        .password("secret")
+                        .email("user2@email.com")
+                        .build()
+
+
+        )
+        );
+        users.forEach(x -> entityManager.persist(x));
+
+        List<User> usersResult = userRepository.findAll();
+
+        assertEquals(users, usersResult);
+
     }
 }
