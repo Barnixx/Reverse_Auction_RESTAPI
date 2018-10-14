@@ -30,7 +30,7 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
 
 @RunWith(SpringRunner.class)
 @WebMvcTest(controllers = UserController.class)
-public class UserControllerTests {
+public class UserControllerTestsIT {
 
     private static final Logger log = LoggerFactory.getLogger(UserController.class);
 

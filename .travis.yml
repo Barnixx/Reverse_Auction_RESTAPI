@@ -6,5 +6,25 @@ branches:
   - develop
   - master
 
+services:
+- postgresql
+
+
+before_script:
+- psql -c "CREATE DATABASE ${DATABASE_NAME};" -U postgres
+- psql -c "CREATE USER ${DATABASE_USER} WITH PASSWORD '${DATABASE_PASS}';" -U postgres
+
 before_install:
 - chmod +x mvnw
+script:
+- ./mvnw clean install -B
+
+cache:
+  directories:
+  - $HOME/.m2
+
+deploy:
+  provider: heroku
+  api_key:
+    secure: $HEROKU_API_KEY
+  app: reverse-auctions

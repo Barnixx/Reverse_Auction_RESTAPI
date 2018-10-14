@@ -18,12 +18,12 @@ import javax.validation.constraints.NotBlank;
 @ConfirmPassword(groups = UserRegisterValidationGroup.class)
 public class CreateUser implements ICommand {
 
-    @UniqueUserName(groups = UserRegisterValidationGroup.class)
+    @UniqueUserName
     @NotBlank
     @Length(min = 5, max = 20)
     private String username;
 
-    @UniqueUserEmail(groups = UserRegisterValidationGroup.class)
+    @UniqueUserEmail
     @NotBlank(message = "Email nie możę być pusty")
     @Email(message = "Wprowadź poprawny adres email")
     private String email;
