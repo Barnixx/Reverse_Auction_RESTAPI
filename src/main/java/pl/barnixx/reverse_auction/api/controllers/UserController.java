@@ -4,7 +4,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
-import pl.barnixx.reverse_auction.core.domain.User;
 import pl.barnixx.reverse_auction.infrastructure.DTO.UserDTO;
 import pl.barnixx.reverse_auction.infrastructure.commands.ICommandDispatcher;
 import pl.barnixx.reverse_auction.infrastructure.commands.users.CreateUser;
@@ -36,9 +35,12 @@ public class UserController {
     }
 
     @GetMapping
-    public ResponseEntity<List<User>> get() {
-        List<User> users = userService.getAll();
-        return new ResponseEntity<>(users, HttpStatus.BAD_REQUEST);
+    public ResponseEntity<List<UserDTO>> get() {
+        List<UserDTO> users = userService.getAll();
+        if (users.size() == 0) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
     @PostMapping

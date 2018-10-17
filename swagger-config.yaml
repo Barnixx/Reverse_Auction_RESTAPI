@@ -1,0 +1,6 @@
+paths:
+  /api/users:
+    get:
+      response:
+        '204':
+          description: Not found any user.

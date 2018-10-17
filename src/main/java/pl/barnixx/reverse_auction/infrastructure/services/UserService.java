@@ -9,6 +9,7 @@ import pl.barnixx.reverse_auction.infrastructure.DTO.UserDTO;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService implements IUserService {
@@ -36,8 +37,11 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public List<User> getAll() {
-        return userRepository.findAll(Sort.by("id"));
+    public List<UserDTO> getAll() {
+        List<User> users = userRepository.findAll(Sort.by("id"));
+        return users.stream()
+                .map(user -> new ModelMapper().map(user, UserDTO.class))
+                .collect(Collectors.toList());
     }
 
     @Override

@@ -11,7 +11,7 @@ public interface IUserService {
 
     UserDTO findByName(String username);
 
-    List<User> getAll();
+    List<UserDTO> getAll();
 
     void update(User user);
 
