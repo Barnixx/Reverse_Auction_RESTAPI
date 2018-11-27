@@ -9,10 +9,10 @@ import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pl.barnixx.reverse_auction.core.domain.User;
-import pl.barnixx.reverse_auction.core.repositories.IUserRepository;
+import pl.barnixx.reverse_auction.core.repositories.UserRepository;
 import pl.barnixx.reverse_auction.infrastructure.DTO.UserDTO;
-import pl.barnixx.reverse_auction.infrastructure.services.IUserService;
 import pl.barnixx.reverse_auction.infrastructure.services.UserService;
+import pl.barnixx.reverse_auction.infrastructure.services.UserServiceImpl;
 
 import java.util.Optional;
 
@@ -25,16 +25,16 @@ import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class UserServiceTests {
-    private static final Logger log = LoggerFactory.getLogger(IUserService.class);
+    private static final Logger log = LoggerFactory.getLogger(UserService.class);
 
-    private IUserService userService;
+    private UserService userService;
 
     @Mock
-    private IUserRepository userRepository;
+    private UserRepository userRepository;
 
     @Before
     public void setUp() {
-        userService = new UserService(userRepository);
+        userService = new UserServiceImpl(userRepository);
     }
 
     @Test

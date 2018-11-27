@@ -5,5 +5,5 @@ import org.springframework.stereotype.Repository;
 import pl.barnixx.reverse_auction.core.domain.Address;
 
 @Repository
-public interface IAddressRepository extends JpaRepository<Address, Long> {
+public interface AddressRepository extends JpaRepository<Address, Long> {
 }

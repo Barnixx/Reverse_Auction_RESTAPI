@@ -7,7 +7,7 @@ import pl.barnixx.reverse_auction.core.domain.User;
 import java.util.Optional;
 
 @Repository
-public interface IUserRepository extends JpaRepository<User, Long> {
+public interface UserRepository extends JpaRepository<User, Long> {
 
     Optional<User> findByUsername(String username);
     boolean existsByEmail(String email);

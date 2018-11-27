@@ -36,12 +36,12 @@ public class CommandDispatcherTests {
         createUser.setEmail("user1@email.com");
         createUser.setPassword("secret");
         createUser.setRepeatPassword("secret");
-        when(context.getBean(ICommandHandler.class, createUser)).thenReturn(createUserHandler);
+        when(context.getBean(createUser.getClass().getSimpleName() + "Handler", ICommandHandler.class)).thenReturn(createUserHandler);
         //when
         commandDispatcher.Dispatch(createUser);
 
         //then
-        verify(context, times(1)).getBean(ICommandHandler.class, createUser);
+        verify(context, times(1)).getBean(createUser.getClass().getSimpleName() + "Handler", ICommandHandler.class);
     }
 
     @Test(expected = NullPointerException.class)

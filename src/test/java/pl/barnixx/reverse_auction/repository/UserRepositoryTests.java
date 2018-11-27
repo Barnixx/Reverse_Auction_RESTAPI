@@ -7,7 +7,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.junit4.SpringRunner;
 import pl.barnixx.reverse_auction.core.domain.User;
-import pl.barnixx.reverse_auction.core.repositories.IUserRepository;
+import pl.barnixx.reverse_auction.core.repositories.UserRepository;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -24,7 +24,7 @@ public class UserRepositoryTests {
     private TestEntityManager entityManager;
 
     @Autowired
-    private IUserRepository userRepository;
+    private UserRepository userRepository;
 
     @Test
     public void find_by_id_then_return_user() {
@@ -107,7 +107,7 @@ public class UserRepositoryTests {
 
     @Test
     public void given_not_then_return_users() {
-        List<User> users = new ArrayList<User>(Arrays.asList(
+        List<User> users = new ArrayList<>(Arrays.asList(
                 User.builder()
                         .username("user1")
                         .password("secret")

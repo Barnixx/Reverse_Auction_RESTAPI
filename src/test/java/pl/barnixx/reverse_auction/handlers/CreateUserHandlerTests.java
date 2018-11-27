@@ -7,7 +7,7 @@ import org.mockito.Mock;
 import org.springframework.test.context.junit4.SpringRunner;
 import pl.barnixx.reverse_auction.infrastructure.commands.users.CreateUser;
 import pl.barnixx.reverse_auction.infrastructure.handlers.users.CreateUserHandler;
-import pl.barnixx.reverse_auction.infrastructure.services.IUserService;
+import pl.barnixx.reverse_auction.infrastructure.services.UserService;
 
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -18,7 +18,7 @@ public class CreateUserHandlerTests {
     private CreateUserHandler userHandler;
 
     @Mock
-    private IUserService userService;
+    private UserService userService;
 
     @Before
     public void setUp() {

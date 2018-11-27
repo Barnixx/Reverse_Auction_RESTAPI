@@ -17,7 +17,7 @@ import pl.barnixx.reverse_auction.api.controllers.UserController;
 import pl.barnixx.reverse_auction.infrastructure.DTO.UserDTO;
 import pl.barnixx.reverse_auction.infrastructure.commands.ICommandDispatcher;
 import pl.barnixx.reverse_auction.infrastructure.commands.users.CreateUser;
-import pl.barnixx.reverse_auction.infrastructure.services.IUserService;
+import pl.barnixx.reverse_auction.infrastructure.services.UserService;
 
 import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -40,7 +40,7 @@ public class UserControllerTestsIT {
     private WebApplicationContext webApplicationContext;
 
     @MockBean
-    private IUserService userService;
+    private UserService userService;
 
     @MockBean
     private ICommandDispatcher commandDispatcher;

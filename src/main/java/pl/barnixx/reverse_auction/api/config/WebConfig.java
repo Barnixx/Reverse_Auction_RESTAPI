@@ -1,5 +1,6 @@
 package pl.barnixx.reverse_auction.api.config;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -43,5 +44,11 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.addRedirectViewController("/api", "/swagger-ui.html");
+    }
+
+    @Bean
+    public ModelMapper modelMapper() {
+
+        return new ModelMapper();
     }
 }

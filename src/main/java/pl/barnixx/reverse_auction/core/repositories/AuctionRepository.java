@@ -5,5 +5,5 @@ import org.springframework.stereotype.Repository;
 import pl.barnixx.reverse_auction.core.domain.Auction;
 
 @Repository
-public interface IAuctionRepository extends JpaRepository<Auction, Long> {
+public interface AuctionRepository extends JpaRepository<Auction, Long> {
 }

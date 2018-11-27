@@ -4,7 +4,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import pl.barnixx.reverse_auction.core.domain.User;
-import pl.barnixx.reverse_auction.core.repositories.IUserRepository;
+import pl.barnixx.reverse_auction.core.repositories.UserRepository;
 import pl.barnixx.reverse_auction.infrastructure.DTO.UserDTO;
 
 import java.util.List;
@@ -12,11 +12,11 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-public class UserService implements IUserService {
+public class UserServiceImpl implements UserService {
 
-    private final IUserRepository userRepository;
+    private final UserRepository userRepository;
 
-    public UserService(IUserRepository UserRepository) {
+    public UserServiceImpl(UserRepository UserRepository) {
         this.userRepository = UserRepository;
     }
 

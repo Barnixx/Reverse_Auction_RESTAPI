@@ -5,7 +5,7 @@ import pl.barnixx.reverse_auction.infrastructure.DTO.UserDTO;
 
 import java.util.List;
 
-public interface IUserService {
+public interface UserService {
 
     UserDTO findById(Long id);
 

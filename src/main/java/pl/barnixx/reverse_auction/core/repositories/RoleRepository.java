@@ -5,5 +5,5 @@ import org.springframework.stereotype.Repository;
 import pl.barnixx.reverse_auction.core.domain.Role;
 
 @Repository
-public interface IRoleRepository extends JpaRepository<Role, Long> {
+public interface RoleRepository extends JpaRepository<Role, Long> {
 }
