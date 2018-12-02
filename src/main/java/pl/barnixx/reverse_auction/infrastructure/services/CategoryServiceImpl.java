@@ -43,8 +43,13 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public Page<CategoryDTO> getAll(Pageable pageable) {
-        Page<Category> categoryList = categoryRepository.findAll(pageable);
+    public Page<CategoryDTO> getAll(Pageable pageable, boolean root) {
+        Page<Category> categoryList;
+        if (root) {
+            categoryList = categoryRepository.findAllByParentCategoryIsNull(pageable);
+        } else {
+            categoryList = categoryRepository.findAll(pageable);
+        }
         return categoryList.map(cat -> modelMapper.map(cat, CategoryDTO.class));
     }
 

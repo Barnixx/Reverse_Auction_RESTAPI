@@ -12,7 +12,7 @@ public interface CategoryService {
 
     CategoryDTO findByName(String name);
 
-    Page<CategoryDTO> getAll(Pageable pageable);
+    Page<CategoryDTO> getAll(Pageable pageable, boolean root);
 
     void createCategory(Category category);
 

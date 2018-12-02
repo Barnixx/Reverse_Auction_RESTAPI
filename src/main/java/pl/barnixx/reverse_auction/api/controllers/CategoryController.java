@@ -14,6 +14,7 @@ import pl.barnixx.reverse_auction.infrastructure.services.CategoryService;
 
 import javax.validation.Valid;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/api/category")
 public class CategoryController extends BaseController {
@@ -34,9 +35,15 @@ public class CategoryController extends BaseController {
         return new ResponseEntity<>(categoryDTO, HttpStatus.OK);
     }
 
-    @GetMapping
-    public ResponseEntity<Page<CategoryDTO>> getAll(Pageable pageable) {
-        Page<CategoryDTO> categoriesDTO = categoryService.getAll(pageable);
+    @GetMapping(
+            produces = "application/json",
+            params = {"root"}
+    )
+    public ResponseEntity<Page<CategoryDTO>> getAll(
+            Pageable pageable,
+            @RequestParam(value = "root", required = false, defaultValue = "false") String root) {
+
+        Page<CategoryDTO> categoriesDTO = categoryService.getAll(pageable, root.equals("true"));
         if (categoriesDTO == null) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
