@@ -9,7 +9,9 @@ import pl.barnixx.reverse_auction.core.repositories.CategoryRepository;
 import pl.barnixx.reverse_auction.infrastructure.DTO.CategoryDTO;
 
 import javax.persistence.EntityManager;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class CategoryServiceImpl implements CategoryService {
@@ -51,6 +53,14 @@ public class CategoryServiceImpl implements CategoryService {
             categoryList = categoryRepository.findAll(pageable);
         }
         return categoryList.map(cat -> modelMapper.map(cat, CategoryDTO.class));
+    }
+
+    @Override
+    public List<CategoryDTO> getAll() {
+        List<Category> categories = categoryRepository.findAll();
+        return categories.stream()
+                .map(cat -> modelMapper.map(cat, CategoryDTO.class))
+                .collect(Collectors.toList());
     }
 
 

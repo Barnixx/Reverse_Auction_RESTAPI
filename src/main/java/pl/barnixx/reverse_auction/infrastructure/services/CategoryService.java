@@ -5,6 +5,8 @@ import org.springframework.data.domain.Pageable;
 import pl.barnixx.reverse_auction.core.domain.Category;
 import pl.barnixx.reverse_auction.infrastructure.DTO.CategoryDTO;
 
+import java.util.List;
+
 public interface CategoryService {
     CategoryDTO getDTObyId(Long id);
 
@@ -13,6 +15,8 @@ public interface CategoryService {
     CategoryDTO findByName(String name);
 
     Page<CategoryDTO> getAll(Pageable pageable, boolean root);
+
+    List<CategoryDTO> getAll();
 
     void createCategory(Category category);
 

@@ -34,7 +34,7 @@ public class UserServiceTests {
 
     @Before
     public void setUp() {
-        userService = new UserServiceImpl(userRepository);
+        userService = new UserServiceImpl(userRepository, new ModelMapper());
     }
 
     @Test
@@ -48,12 +48,12 @@ public class UserServiceTests {
                 .build();
         when(userRepository.findById(anyLong())).thenReturn(ofNullable(user1));
         //when
-        UserDTO resultUser = userService.findById(1L);
+        Optional<UserDTO> resultUser = userService.findById(1L);
         log.info(resultUser.toString());
         //then
         verify(userRepository, times(1)).findById(anyLong());
         assert user1 != null;
-        assertEquals(new ModelMapper().map(user1, UserDTO.class), resultUser);
+        assertEquals(new ModelMapper().map(user1, UserDTO.class), resultUser.orElse(null));
     }
 
     @Test
@@ -61,10 +61,10 @@ public class UserServiceTests {
         //given
         when(userRepository.findById(anyLong())).thenReturn(Optional.empty());
         //when
-        UserDTO resultUser = userService.findById(2L);
+        Optional<UserDTO> resultUser = userService.findById(2L);
         //then
         verify(userRepository, times(1)).findById(anyLong());
-        assertNull(resultUser);
+        assertEquals(resultUser, Optional.empty());
     }
 
     @Test

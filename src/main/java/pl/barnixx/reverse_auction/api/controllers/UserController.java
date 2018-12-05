@@ -1,5 +1,7 @@
 package pl.barnixx.reverse_auction.api.controllers;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
@@ -10,7 +12,6 @@ import pl.barnixx.reverse_auction.infrastructure.commands.users.CreateUser;
 import pl.barnixx.reverse_auction.infrastructure.services.UserService;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/users")
@@ -25,21 +26,17 @@ public class UserController extends BaseController {
 
     @GetMapping("/{id}")
     public ResponseEntity<UserDTO> get(@PathVariable long id) {
-        UserDTO user = userService.findById(id);
-        if (user == null) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
 
-        return new ResponseEntity<>(user, HttpStatus.OK);
+        return userService.findById(id).map(user ->
+                new ResponseEntity<>(user, HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NO_CONTENT));
     }
 
     @GetMapping
-    public ResponseEntity<List<UserDTO>> get() {
-        List<UserDTO> users = userService.getAll();
-        if (users.size() == 0) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-        return new ResponseEntity<>(users, HttpStatus.OK);
+    public ResponseEntity<Page<UserDTO>> get(Pageable pageable) {
+        Page<UserDTO> users = userService.getAll(pageable);
+        return users.getTotalElements() < 1L ?
+                new ResponseEntity<>(HttpStatus.NO_CONTENT) : new ResponseEntity<>(users, HttpStatus.OK);
     }
 
     @PostMapping
@@ -51,5 +48,14 @@ public class UserController extends BaseController {
         commandDispatcher.Dispatch(command);
 
         return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable long id) {
+        return userService.findById(id)
+                .map(temp -> {
+                    userService.delete(temp.getId());
+                    return new ResponseEntity<Void>(HttpStatus.OK);
+                }).orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 }

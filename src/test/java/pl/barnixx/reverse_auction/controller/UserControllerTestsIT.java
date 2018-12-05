@@ -19,6 +19,8 @@ import pl.barnixx.reverse_auction.infrastructure.commands.ICommandDispatcher;
 import pl.barnixx.reverse_auction.infrastructure.commands.users.CreateUser;
 import pl.barnixx.reverse_auction.infrastructure.services.UserService;
 
+import java.util.Optional;
+
 import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
@@ -57,7 +59,8 @@ public class UserControllerTestsIT {
                 .username("user1")
                 .email("user1@email.com")
                 .build();
-        when(userService.findById(anyLong())).thenReturn(userDTO);
+        Optional<UserDTO> optUser = Optional.of(userDTO);
+        when(userService.findById(anyLong())).thenReturn(optUser);
 
         log.info("Start test with user: " + userDTO.toString());
         mockMvc
@@ -75,7 +78,7 @@ public class UserControllerTestsIT {
 
     @Test
     public void given_invalid_id_should_be_not_exists() throws Exception {
-        when(userService.findById(anyLong())).thenReturn(null);
+        when(userService.findById(anyLong())).thenReturn(Optional.empty());
 
         log.info("Start test with user: null.");
         mockMvc

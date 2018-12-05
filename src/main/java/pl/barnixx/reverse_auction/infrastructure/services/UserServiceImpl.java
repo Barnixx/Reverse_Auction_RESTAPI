@@ -1,32 +1,30 @@
 package pl.barnixx.reverse_auction.infrastructure.services;
 
 import org.modelmapper.ModelMapper;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import pl.barnixx.reverse_auction.core.domain.User;
 import pl.barnixx.reverse_auction.core.repositories.UserRepository;
 import pl.barnixx.reverse_auction.infrastructure.DTO.UserDTO;
 
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private final ModelMapper modelMapper;
 
-    public UserServiceImpl(UserRepository UserRepository) {
+    public UserServiceImpl(UserRepository UserRepository, ModelMapper modelMapper) {
         this.userRepository = UserRepository;
+        this.modelMapper = modelMapper;
     }
 
     @Override
-    public UserDTO findById(Long id) {
-
+    public Optional<UserDTO> findById(Long id) {
         Optional<User> optUser = userRepository.findById(id);
-
-        return optUser.map(user -> new ModelMapper().map(user, UserDTO.class)).orElse(null);
-
+        return optUser.map(user -> new ModelMapper().map(user, UserDTO.class));
     }
 
     @Override
@@ -37,11 +35,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserDTO> getAll() {
-        List<User> users = userRepository.findAll(Sort.by("id"));
-        return users.stream()
-                .map(user -> new ModelMapper().map(user, UserDTO.class))
-                .collect(Collectors.toList());
+    public Page<UserDTO> getAll(Pageable pageable) {
+        Page<User> users = userRepository.findAll(pageable);
+        return users.map(usr -> modelMapper.map(usr, UserDTO.class));
     }
 
     @Override
@@ -51,12 +47,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void delete(User user) {
-
+        userRepository.delete(user);
     }
 
     @Override
     public void delete(Long id) {
-
+        userRepository.deleteById(id);
     }
 
     @Override

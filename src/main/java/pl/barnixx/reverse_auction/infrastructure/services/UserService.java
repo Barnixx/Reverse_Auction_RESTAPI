@@ -1,17 +1,19 @@
 package pl.barnixx.reverse_auction.infrastructure.services;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import pl.barnixx.reverse_auction.core.domain.User;
 import pl.barnixx.reverse_auction.infrastructure.DTO.UserDTO;
 
-import java.util.List;
+import java.util.Optional;
 
 public interface UserService {
 
-    UserDTO findById(Long id);
+    Optional<UserDTO> findById(Long id);
 
     UserDTO findByName(String username);
 
-    List<UserDTO> getAll();
+    Page<UserDTO> getAll(Pageable pageable);
 
     void update(User user);
 
