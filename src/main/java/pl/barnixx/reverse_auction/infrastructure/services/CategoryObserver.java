@@ -6,6 +6,8 @@ import org.springframework.stereotype.Service;
 import pl.barnixx.reverse_auction.infrastructure.DTO.CategoryDTO;
 import pl.barnixx.reverse_auction.infrastructure.events.RefreshCategoryEvent;
 
+import java.util.List;
+
 @Service
 public class CategoryObserver {
 
@@ -19,8 +21,8 @@ public class CategoryObserver {
 
     @Scheduled(fixedRate = 5000)
     public void refresh() {
-        System.out.println("CategoryObserver");
-        Iterable<CategoryDTO> categories = categoryService.getAll();
+//        System.out.println("CategoryObserver");
+        List<CategoryDTO> categories = categoryService.getAll();
         this.eventPublisher.publishEvent(new RefreshCategoryEvent(categories));
     }
 }

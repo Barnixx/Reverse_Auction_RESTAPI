@@ -5,8 +5,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.async.AsyncRequestTimeoutException;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 import pl.barnixx.reverse_auction.infrastructure.DTO.CategoryDTO;
 import pl.barnixx.reverse_auction.infrastructure.commands.ICommandDispatcher;
@@ -86,19 +88,26 @@ public class CategoryController extends BaseController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
+
     @GetMapping(value = "/stream")
+    @Transactional
     public SseEmitter streamAllCategories(HttpServletResponse response) {
         response.setHeader("Cache-Control", "no-store");
-        SseEmitter emitter = new SseEmitter(30000L);
+        SseEmitter emitter = new SseEmitter();
+
         this.emitters.add(emitter);
 
-        System.out.println("StreamCategory");
 
         emitter.onCompletion(() -> this.emitters.remove(emitter));
         emitter.onTimeout(() -> this.emitters.remove(emitter));
-
-        System.out.println("StreamCategory");
-
+//        ExecutorService sseMvcExecutor = Executors.newSingleThreadExecutor();
+//        sseMvcExecutor.execute(() -> {
+//            try {
+//                emitter.send("CHUJJJJJJ");
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//        });
         return emitter;
     }
 
@@ -107,8 +116,8 @@ public class CategoryController extends BaseController {
         List<SseEmitter> deadEmitters = new ArrayList<>();
         this.emitters.forEach(emitter -> {
             try {
-                System.out.println("refreshCat");
-                System.out.println(refreshCategoryEvent.getList());
+//                System.out.println("refreshCat");
+//                System.out.println(refreshCategoryEvent.getList());
                 emitter.send(refreshCategoryEvent.getList());
             } catch (Exception e) {
                 deadEmitters.add(emitter);
@@ -116,5 +125,10 @@ public class CategoryController extends BaseController {
         });
 
         this.emitters.removeAll(deadEmitters);
+    }
+
+    @ExceptionHandler(value = AsyncRequestTimeoutException.class)
+    public String asyncTimeout(AsyncRequestTimeoutException e) {
+        return null; // "SSE timeout..OK";
     }
 }
