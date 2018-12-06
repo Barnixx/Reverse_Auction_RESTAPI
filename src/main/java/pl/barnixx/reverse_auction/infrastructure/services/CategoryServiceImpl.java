@@ -9,11 +9,13 @@ import pl.barnixx.reverse_auction.core.repositories.CategoryRepository;
 import pl.barnixx.reverse_auction.infrastructure.DTO.CategoryDTO;
 
 import javax.persistence.EntityManager;
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@Transactional
 public class CategoryServiceImpl implements CategoryService {
 
     private final CategoryRepository categoryRepository;

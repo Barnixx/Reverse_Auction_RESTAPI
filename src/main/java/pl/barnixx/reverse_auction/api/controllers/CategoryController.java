@@ -17,12 +17,9 @@ import pl.barnixx.reverse_auction.infrastructure.services.CategoryService;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 @CrossOrigin
 @RestController
@@ -89,36 +86,19 @@ public class CategoryController extends BaseController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    @GetMapping("/stream")
+    @GetMapping(value = "/stream")
     public SseEmitter streamAllCategories(HttpServletResponse response) {
         response.setHeader("Cache-Control", "no-store");
         SseEmitter emitter = new SseEmitter(30000L);
         this.emitters.add(emitter);
 
+        System.out.println("StreamCategory");
+
         emitter.onCompletion(() -> this.emitters.remove(emitter));
         emitter.onTimeout(() -> this.emitters.remove(emitter));
 
-        return emitter;
-    }
+        System.out.println("StreamCategory");
 
-    @GetMapping("/stream-sse-mvc")
-    public SseEmitter streamSseMvc() {
-        SseEmitter emitter = new SseEmitter();
-        ExecutorService sseMvcExecutor = Executors.newSingleThreadExecutor();
-        sseMvcExecutor.execute(() -> {
-            try {
-                for (int i = 0; true; i++) {
-                    SseEmitter.SseEventBuilder event = SseEmitter.event()
-                            .data("SSE MVC - " + LocalTime.now().toString())
-                            .id(String.valueOf(i))
-                            .name("sse event - mvc");
-                    emitter.send(event);
-                    Thread.sleep(1000);
-                }
-            } catch (Exception ex) {
-                emitter.completeWithError(ex);
-            }
-        });
         return emitter;
     }
 
@@ -127,6 +107,8 @@ public class CategoryController extends BaseController {
         List<SseEmitter> deadEmitters = new ArrayList<>();
         this.emitters.forEach(emitter -> {
             try {
+                System.out.println("refreshCat");
+                System.out.println(refreshCategoryEvent.getList());
                 emitter.send(refreshCategoryEvent.getList());
             } catch (Exception e) {
                 deadEmitters.add(emitter);
