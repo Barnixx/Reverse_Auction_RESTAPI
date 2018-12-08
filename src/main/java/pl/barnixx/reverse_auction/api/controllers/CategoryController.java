@@ -19,6 +19,7 @@ import pl.barnixx.reverse_auction.infrastructure.services.CategoryService;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -95,6 +96,11 @@ public class CategoryController extends BaseController {
         response.setHeader("Cache-Control", "no-store");
         SseEmitter emitter = new SseEmitter();
 
+        try {
+            emitter.send(categoryService.getAll());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         this.emitters.add(emitter);
 
 

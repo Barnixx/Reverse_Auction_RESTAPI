@@ -1,15 +1,16 @@
 package pl.barnixx.reverse_auction.infrastructure.services;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import pl.barnixx.reverse_auction.core.domain.Category;
 import pl.barnixx.reverse_auction.core.repositories.CategoryRepository;
 import pl.barnixx.reverse_auction.infrastructure.DTO.CategoryDTO;
 
-import javax.persistence.EntityManager;
-import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -20,12 +21,10 @@ public class CategoryServiceImpl implements CategoryService {
 
     private final CategoryRepository categoryRepository;
     private final ModelMapper modelMapper;
-    private final EntityManager entityManager;
 
-    public CategoryServiceImpl(CategoryRepository categoryRepository, ModelMapper modelMapper, EntityManager entityManager) {
+    public CategoryServiceImpl(CategoryRepository categoryRepository, ModelMapper modelMapper) {
         this.categoryRepository = categoryRepository;
         this.modelMapper = modelMapper;
-        this.entityManager = entityManager;
     }
 
     @Override
@@ -58,6 +57,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    @Cacheable(value = "categories")
     public List<CategoryDTO> getAll() {
         List<Category> categories = categoryRepository.findAll();
         return categories.stream()
@@ -67,6 +67,7 @@ public class CategoryServiceImpl implements CategoryService {
 
 
     @Override
+    @CacheEvict(value = "categories", allEntries = true)
     public void createCategory(Category category) {
         categoryRepository.save(category);
     }
