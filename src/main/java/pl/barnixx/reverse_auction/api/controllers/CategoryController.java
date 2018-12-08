@@ -5,7 +5,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.async.AsyncRequestTimeoutException;
@@ -17,6 +16,7 @@ import pl.barnixx.reverse_auction.infrastructure.commands.categories.UpdateCateg
 import pl.barnixx.reverse_auction.infrastructure.events.RefreshCategoryEvent;
 import pl.barnixx.reverse_auction.infrastructure.services.CategoryService;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.IOException;
@@ -91,10 +91,9 @@ public class CategoryController extends BaseController {
 
 
     @GetMapping(value = "/stream")
-    @Transactional
-    public SseEmitter streamAllCategories(HttpServletResponse response) {
+    public SseEmitter streamAllCategories(HttpServletResponse response, HttpServletRequest request) {
         response.setHeader("Cache-Control", "no-store");
-        SseEmitter emitter = new SseEmitter();
+        SseEmitter emitter = new SseEmitter((long) (30 * (6 * 10000)));
 
         try {
             emitter.send(categoryService.getAll());
@@ -114,6 +113,7 @@ public class CategoryController extends BaseController {
 //                e.printStackTrace();
 //            }
 //        });
+        System.out.println("add emiiter");
         return emitter;
     }
 
