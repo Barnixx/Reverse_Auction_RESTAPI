@@ -18,13 +18,6 @@ public class CategoryObserver {
         this.categoryService = categoryService;
     }
 
-//    @Scheduled(fixedRate = 5000)
-//    public void refresh() {
-////        System.out.println("CategoryObserver");
-//        List<CategoryDTO> categories = categoryService.getAll();
-//        this.eventPublisher.publishEvent(new RefreshCategoryEvent(categories));
-//    }
-
     public void refresh() {
         List<CategoryDTO> categories = categoryService.getAll();
         this.eventPublisher.publishEvent(new RefreshCategoryEvent(categories));

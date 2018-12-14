@@ -105,15 +105,6 @@ public class CategoryController extends BaseController {
 
         emitter.onCompletion(() -> this.emitters.remove(emitter));
         emitter.onTimeout(() -> this.emitters.remove(emitter));
-//        ExecutorService sseMvcExecutor = Executors.newSingleThreadExecutor();
-//        sseMvcExecutor.execute(() -> {
-//            try {
-//                emitter.send("CHUJJJJJJ");
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//        });
-        System.out.println("add emiiter");
         return emitter;
     }
 
@@ -122,8 +113,6 @@ public class CategoryController extends BaseController {
         List<SseEmitter> deadEmitters = new ArrayList<>();
         this.emitters.forEach(emitter -> {
             try {
-//                System.out.println("refreshCat");
-//                System.out.println(refreshCategoryEvent.getList());
                 emitter.send(refreshCategoryEvent.getList());
             } catch (Exception e) {
                 deadEmitters.add(emitter);

@@ -13,7 +13,6 @@ public class RefreshCategoryEvent {
     }
 
     public List<CategoryDTO> getList() {
-//        System.out.println("CategoryEvent");
         return categories;
     }
 
